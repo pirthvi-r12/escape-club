@@ -15,6 +15,3 @@ yarn-error.log*
 .vercel
 next-env.d.ts
 tsconfig.tsbuildinfo
-.env*
-server.log
-server.err.log

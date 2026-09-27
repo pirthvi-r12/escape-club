@@ -76,9 +76,24 @@ async function waitForDatabase(maxAttempts = 45): Promise<boolean> {
 }
 
 function startEmbeddedServerDetached() {
-  console.error(
-    "[db] Local embedded PostgreSQL is unavailable. Use TiDB (.env.local) or Docker: npm run db:up",
-  );
+  const savedPid = readSavedPostgresPid();
+  if (savedPid && isProcessRunning(savedPid)) {
+    return;
+  }
+
+  const tsx = join(root, "node_modules", "tsx", "dist", "cli.mjs");
+  const script = join(root, "scripts", "embedded-postgres-server.ts");
+  const child = spawnHidden(process.execPath, [tsx, script], {
+    cwd: root,
+    detached: true,
+    stdio: "ignore",
+    env: process.env,
+  });
+  child.unref();
+  if (child.pid) {
+    mkdirSync(join(root, ".data"), { recursive: true });
+    writeFileSync(pidFile, String(child.pid), "utf8");
+  }
 }
 
 async function needsSchema(): Promise<boolean> {
