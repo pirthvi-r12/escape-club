@@ -154,7 +154,7 @@ export function MilesChart({
                 activeDot={{
                   r: 4,
                   fill: "var(--color-champagne)",
-                  stroke: "#04050a",
+                  stroke: "#2e2910",
                   strokeWidth: 2,
                 }}
                 animationDuration={1500}

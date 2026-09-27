@@ -16,9 +16,9 @@ const Globe = dynamic(() => import("react-globe.gl"), {
 const HOME = { lat: 51.5072, lng: -0.1276, label: "London" };
 
 const STATUS_COLOR: Record<string, string> = {
-  COMPLETED: "#d9b989",
-  BOOKED: "#86adc4",
-  DREAMING: "#8d7448",
+  COMPLETED: "#eb7d00",
+  BOOKED: "#2c5745",
+  DREAMING: "#c56800",
   CANCELLED: "#666d7e",
 };
 
@@ -89,7 +89,7 @@ export function TripGlobe({
         lat: trip.destination.lat,
         lng: trip.destination.lng,
         size: trip.status === "COMPLETED" ? 0.42 : 0.55,
-        color: STATUS_COLOR[trip.status] ?? "#d9b989",
+        color: STATUS_COLOR[trip.status] ?? "#eb7d00",
         trip,
       })),
     [trips],
@@ -212,7 +212,7 @@ export function TripGlobe({
             backgroundColor="rgba(0,0,0,0)"
             globeImageUrl="/textures/earth-night.jpg"
             bumpImageUrl="/textures/earth-topology.png"
-            atmosphereColor="#86adc4"
+            atmosphereColor="#2c5745"
             atmosphereAltitude={0.19}
             pointsData={markers}
             pointLat="lat"
@@ -230,11 +230,11 @@ export function TripGlobe({
                 backdrop-filter: blur(12px);
                 padding: 10px 14px;
                 border-radius: 8px;
-                color: #f4f1ea;
+                color: #ebe3a7;
                 font-size: 12px;
                 letter-spacing: 0.01em;
               ">
-                <div style="color:#d9b989;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:5px">
+                <div style="color:#eb7d00;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:5px">
                   ${trip.destination.country}
                 </div>
                 <div style="font-size:13px">${trip.destination.name}</div>

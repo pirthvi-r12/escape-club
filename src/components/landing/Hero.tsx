@@ -199,7 +199,7 @@ export function Hero() {
           background:
             "radial-gradient(120% 70% at 18% 88%, rgba(217,185,137,0.10), transparent 58%)," +
             "radial-gradient(90% 60% at 82% 12%, rgba(134,173,196,0.12), transparent 60%)," +
-            "linear-gradient(180deg, rgba(4,5,10,0.62) 0%, rgba(4,5,10,0.12) 34%, rgba(4,5,10,0.55) 72%, #04050a 100%)",
+            "linear-gradient(180deg, rgba(46,41,16,0.62) 0%, rgba(46,41,16,0.12) 34%, rgba(46,41,16,0.55) 72%, #2e2910 100%)",
         }}
       />
 

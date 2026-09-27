@@ -1,0 +1,7 @@
+{
+  "name": "escape-club-thumbnail",
+  "private": true,
+  "scripts": {
+    "png": "node export-png.mjs"
+  }
+}

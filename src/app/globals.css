@@ -8,33 +8,33 @@ nextjs-portal,
 }
 
 /* ------------------------------------------------------------------ *
- *  ESCAPE CLUB — design tokens
+ *  ESCAPE CLUB — Tangerine / Vanilla / Brunswick / Drab brown
  * ------------------------------------------------------------------ */
 @theme {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-display: var(--font-playfair), ui-serif, Georgia, "Times New Roman", serif;
 
-  /* Moody near-black ladder */
-  --color-ink-950: #04050a;
-  --color-ink-900: #06070e;
-  --color-ink-850: #090b14;
-  --color-ink-800: #0c0f1a;
-  --color-ink-700: #121622;
-  --color-ink-600: #1a1f2e;
-  --color-ink-500: #252b3d;
+  /* Drab brown + Brunswick green surfaces */
+  --color-ink-950: #2e2910;
+  --color-ink-900: #282410;
+  --color-ink-850: #222010;
+  --color-ink-800: #243528;
+  --color-ink-700: #254a3b;
+  --color-ink-600: #2c5745;
+  --color-ink-500: #3a6b58;
 
-  /* Warm paper whites */
-  --color-bone: #f4f1ea;
-  --color-bone-dim: #d8d4cb;
-  --color-mist: #9aa1b1;
-  --color-mist-dim: #666d7e;
+  /* Vanilla paper + muted copy */
+  --color-bone: #ebe3a7;
+  --color-bone-dim: #cfc89a;
+  --color-mist: #9a9580;
+  --color-mist-dim: #6a6555;
 
-  /* Accents */
-  --color-champagne: #d9b989;
-  --color-champagne-soft: #e8d4b0;
-  --color-champagne-deep: #8d7448;
-  --color-glacier: #86adc4;
-  --color-ember: #c2714a;
+  /* Tangerine + green accents */
+  --color-champagne: #eb7d00;
+  --color-champagne-soft: #f0a040;
+  --color-champagne-deep: #c56800;
+  --color-glacier: #2c5745;
+  --color-ember: #d97600;
 
   /* Motion */
   --ease-luxe: cubic-bezier(0.16, 1, 0.3, 1);
@@ -159,8 +159,8 @@ html.lenis body {
   .glass-deep {
     background: linear-gradient(
       145deg,
-      rgb(14 17 27 / 0.82) 0%,
-      rgb(8 10 17 / 0.72) 100%
+      rgb(44 87 69 / 0.78) 0%,
+      rgb(46 41 16 / 0.88) 100%
     );
     border: 1px solid rgb(255 255 255 / 0.07);
     backdrop-filter: blur(28px) saturate(130%);

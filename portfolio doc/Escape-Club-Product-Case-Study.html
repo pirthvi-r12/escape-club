@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Escape Club</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink-950: #2e2910;
+      --ink-900: #282410;
+      --ink-800: #243528;
+      --bg: #2e2910;
+      --bg-2: #243528;
+      --line: rgba(255, 255, 255, 0.1);
+      --text: #ebe3a7;
+      --muted: #9a9580;
+      --accent: #eb7d00;
+      --accent-2: #f0a040;
+      --glacier: #2c5745;
+      --mint: #2c5745;
+      --screen: #2e2910;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scroll-snap-type: y mandatory; }
+    body {
+      font-family: Inter, system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    .slide {
+      min-height: 100vh;
+      scroll-snap-align: start;
+      position: relative;
+      padding: 0 0 40px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 55% 42% at 85% 0%, rgba(235, 125, 0, 0.14), transparent 55%),
+        radial-gradient(ellipse 40% 35% at 5% 100%, rgba(44, 87, 69, 0.14), transparent 50%),
+        linear-gradient(180deg, #282410 0%, #2e2910 100%);
+      pointer-events: none;
+    }
+    .slide > * { position: relative; z-index: 1; }
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 20px clamp(18px, 4vw, 56px) 0;
+      min-height: 0;
+    }
+    .wrap.hero-layout,
+    .wrap.split-visual {
+      display: grid;
+      align-content: center;
+    }
+
+    .topbar {
+      position: relative;
+      z-index: 2;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px clamp(18px, 4vw, 56px);
+      background:
+        linear-gradient(90deg, rgba(36, 53, 40, 0.96) 0%, rgba(46, 41, 16, 0.94) 55%, rgba(235, 125, 0, 0.08) 100%);
+      border-bottom: 1px solid var(--line);
+    }
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .topbar-mark {
+      width: 30px; height: 30px;
+      border-radius: 9px;
+      background: linear-gradient(145deg, #ebe3a7, #eb7d00 55%, #c56800);
+      box-shadow: 0 6px 16px rgba(235, 125, 0, 0.28);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+    .topbar-mark span {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,0.35);
+    }
+    .topbar-brand strong {
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 17px;
+      font-weight: 500;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      line-height: 1;
+    }
+    .topbar-brand em {
+      display: block;
+      margin-top: 3px;
+      font-style: normal;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .topbar-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 11px;
+      border-radius: 999px;
+      background: var(--ink-800);
+      color: var(--text);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .topbar-chip i {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 3px rgba(235, 125, 0, 0.25);
+      display: inline-block;
+    }
+    .topbar-tag {
+      padding: 6px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(235, 125, 0, 0.35);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--accent-2);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .brand-mark .orb {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ebe3a7, #eb7d00 55%, #c56800);
+      box-shadow: 0 8px 18px rgba(235, 125, 0, 0.28);
+      flex-shrink: 0;
+    }
+    .brand-mark .name {
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(34px, 5vw, 52px);
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      color: var(--text);
+    }
+    h1 {
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(22px, 2.6vw, 30px);
+      font-weight: 500;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      max-width: 22ch;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+    h2 {
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(22px, 2.8vw, 34px);
+      font-weight: 500;
+      letter-spacing: -0.03em;
+      line-height: 1.12;
+      margin-bottom: 10px;
+      max-width: 22ch;
+      color: var(--text);
+    }
+    .accent {
+      background: linear-gradient(90deg, #ebe3a7, #eb7d00);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .lead, .body-copy {
+      color: var(--muted);
+      font-size: clamp(13px, 1.15vw, 15px);
+      line-height: 1.65;
+      max-width: 48ch;
+      margin-bottom: 12px;
+    }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 8px; }
+    .card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+    }
+    .card .tag {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 7px;
+      font-weight: 700;
+    }
+    .card h3 {
+      font-family: Inter, sans-serif;
+      font-size: 15px;
+      margin-bottom: 7px;
+      color: var(--text);
+    }
+    .card p, .card li {
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.5;
+    }
+    .card ul { list-style: none; display: grid; gap: 6px; margin-top: 6px; }
+    .card li { display: flex; gap: 7px; color: var(--muted); }
+    .card li::before { content: "▹"; color: var(--accent); flex-shrink: 0; }
+
+    .hero-layout {
+      display: grid;
+      grid-template-columns: 0.92fr 1.08fr;
+      gap: 28px;
+      align-items: center;
+    }
+    .split-visual {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 22px;
+      align-items: center;
+    }
+
+    .devices {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      position: relative;
+    }
+    .laptop {
+      position: relative;
+      width: 100%;
+      max-width: 620px;
+    }
+    .laptop.mbp-m5-pro {
+      filter: drop-shadow(0 32px 64px rgba(0, 0, 0, 0.55));
+    }
+    .mbp-lid {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 10.35;
+      padding: 3px;
+      border-radius: 18px 18px 0 0;
+      background: linear-gradient(165deg, #4a4a4e 0%, #2e2e32 35%, #222226 70%, #18181b 100%);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.5);
+    }
+    .mbp-lid::before {
+      content: "";
+      position: absolute;
+      left: 10%;
+      right: 10%;
+      top: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      pointer-events: none;
+    }
+    .mac-bezel {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      background: #050508;
+      border-radius: 15px 15px 0 0;
+      padding: 4px 4px 0;
+      overflow: hidden;
+    }
+    .mbp-notch-row {
+      flex: 0 0 18px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      background: #050508;
+      position: relative;
+      z-index: 3;
+    }
+    .mbp-notch {
+      width: 86px;
+      height: 8px;
+      border-radius: 0 0 10px 10px;
+      background: #000;
+      box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.04);
+    }
+    .laptop-screen-in {
+      position: relative;
+      z-index: 2;
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+      overflow: hidden;
+      background: var(--screen);
+      border-radius: 2px 2px 0 0;
+    }
+    .mbp-base {
+      position: relative;
+      margin: 0 -0.5%;
+    }
+    .mbp-hinge {
+      display: block;
+      height: 4px;
+      background: linear-gradient(180deg, #1a1a1e, #0e0e10);
+      border-radius: 0 0 2px 2px;
+    }
+    .mbp-deck {
+      height: 14px;
+      background: linear-gradient(180deg, #3d3d42 0%, #2a2a2e 45%, #222226 100%);
+      border-radius: 0 0 14px 14px;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        0 2px 0 #141416;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .mbp-trackpad {
+      width: 22%;
+      height: 5px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #4a4a50, #35353a);
+      opacity: 0.85;
+    }
+    .mbp-foot {
+      height: 5px;
+      margin: 0 8%;
+      background: linear-gradient(180deg, #2a2a2e, #1a1a1c);
+      border-radius: 0 0 8px 8px;
+    }
+    .phone-wrap {
+      margin-left: -38px;
+      margin-bottom: 6px;
+      z-index: 4;
+      position: relative;
+    }
+    .phone { position: relative; width: 168px; }
+    .phone-chrome {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 440 / 956;
+      background:
+        linear-gradient(155deg, #5a5a5e 0%, #3a3a3e 22%, #2e2e32 50%, #252528 78%, #1c1c1f 100%);
+      border-radius: 46px;
+      padding: 3px;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.22),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.45),
+        0 28px 56px rgba(0, 0, 0, 0.45),
+        0 0 0 1px rgba(255, 255, 255, 0.06);
+    }
+    .phone-chrome::before,
+    .phone-chrome::after {
+      content: "";
+      position: absolute;
+      background: linear-gradient(180deg, #4a4a4e, #2a2a2e);
+      border-radius: 2px;
+      z-index: 6;
+    }
+    .phone-chrome::before {
+      left: -1px;
+      top: 21%;
+      width: 2px;
+      height: 7%;
+      box-shadow: 0 18px 0 #3a3a3e, 0 36px 0 #3a3a3e;
+    }
+    .phone-chrome::after {
+      right: -1px;
+      top: 28%;
+      width: 2px;
+      height: 11%;
+      border-radius: 3px;
+    }
+    .phone-glass {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      border-radius: 43px;
+      overflow: hidden;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+    }
+    .phone-notch {
+      display: none;
+    }
+    .phone-screen-in {
+      position: absolute;
+      z-index: 2;
+      inset: 0;
+      overflow: hidden;
+      border-radius: 43px;
+      background: var(--screen);
+      padding: 32px 11px 12px;
+    }
+    .mini-phone {
+      position: relative;
+      width: 200px;
+      margin: 0 auto;
+    }
+    .mini-phone .phone-chrome {
+      width: 100%;
+      box-shadow:
+        inset 0 1px 1px rgba(255,255,255,0.75),
+        inset 0 -1px 1px rgba(0,0,0,0.12),
+        0 18px 32px rgba(40, 20, 8, 0.16);
+    }
+    .mini-phone .phone-screen-in:not(.has-capture) { padding: 32px 11px 12px; }
+
+    .devices.solo-laptop .phone-wrap { display: none !important; }
+    .devices.solo-laptop .laptop { width: min(100%, 760px); max-width: 760px; }
+    .devices.solo-phone .laptop { display: none !important; }
+    .devices.solo-phone .phone-wrap {
+      margin-left: 0;
+      display: flex !important;
+      justify-content: center;
+      width: 100%;
+    }
+    .devices.solo-phone .phone { width: 212px; }
+
+    /* Crisp light screen UI */
+    .dash {
+      width: 100%; height: 100%;
+      padding: 12px;
+      background: linear-gradient(180deg, #fffaf6, #ffffff);
+      display: flex; flex-direction: column; gap: 9px; overflow: hidden;
+    }
+    .dash-top { display: flex; justify-content: space-between; align-items: center; }
+    .dash-brand {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 12px; font-weight: 700;
+      font-family: "Space Grotesk", sans-serif;
+      color: var(--text);
+    }
+    .dash-brand i {
+      width: 13px; height: 13px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ffd4b8, #ff4d00 60%, #9a3412);
+      display: inline-block;
+    }
+    .pill {
+      display: inline-flex; padding: 3px 8px; border-radius: 999px;
+      background: rgba(255,77,0,0.1); color: var(--accent-2);
+      border: 1px solid rgba(255,77,0,0.25); font-size: 9px; font-weight: 700;
+    }
+    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+    .stat {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px; padding: 9px;
+    }
+    .stat b {
+      display: block; font-family: "Space Grotesk", sans-serif;
+      font-size: 15px; margin-bottom: 2px; color: var(--text);
+    }
+    .stat span { font-size: 9px; color: var(--muted); }
+    .panel {
+      flex: 1; min-height: 0;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 11px; padding: 9px; overflow: hidden;
+    }
+    .panel h4 {
+      font-size: 11px; margin-bottom: 7px;
+      font-family: "Space Grotesk", sans-serif; color: var(--text);
+    }
+    .row {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 9.5px; color: #4a433c;
+      padding: 6px 0; border-bottom: 1px solid rgba(20,16,12,0.06);
+    }
+    .row:last-child { border-bottom: none; }
+    .row em { font-style: normal; color: var(--mint); font-size: 9px; font-weight: 700; }
+    .bars { display: flex; align-items: flex-end; gap: 4px; height: 46px; margin-top: 7px; }
+    .bars i {
+      flex: 1; border-radius: 2px 2px 0 0;
+      background: linear-gradient(180deg, #ff7a33, #ff4d00); opacity: 0.92;
+    }
+    .writer-layout {
+      display: flex; gap: 9px; height: 100%; padding: 11px;
+      background: linear-gradient(180deg, #fffaf6, #fff);
+    }
+    .writer-side {
+      width: 28%; border-right: 1px solid var(--line); padding-right: 8px;
+    }
+    .writer-main { flex: 1; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+    .line { height: 5px; border-radius: 3px; background: rgba(20,16,12,0.08); margin-bottom: 5px; }
+    .line.m { width: 82%; }
+    .line.s { width: 58%; }
+    .score { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+    .ring {
+      width: 36px; height: 36px; border-radius: 50%;
+      background:
+        radial-gradient(circle at center, #fff 55%, transparent 56%),
+        conic-gradient(#ff4d00 0 78%, rgba(20,16,12,0.08) 78% 100%);
+      display: grid; place-items: center;
+      font-size: 10px; font-weight: 700; color: var(--text);
+    }
+
+    /* Phone UI — crisp workspace */
+    .phone-ui {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background: linear-gradient(180deg, #ffffff, #faf7f3);
+    }
+    .phone-ui .label { font-size: 10px; color: var(--muted); font-weight: 500; }
+    .phone-ui .value {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 22px; font-weight: 700; margin: 0 0 4px; color: var(--text);
+      letter-spacing: -0.03em;
+    }
+    .phone-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 2px; }
+    .phone-stat {
+      background: #f4f1ec; border: 1px solid var(--line);
+      border-radius: 12px; padding: 8px 9px;
+    }
+    .phone-stat span { display: block; font-size: 9px; color: var(--muted); margin-bottom: 2px; }
+    .phone-stat strong {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 16px; color: var(--text); font-weight: 700;
+    }
+    .activity-label {
+      font-size: 10px; color: var(--muted); font-weight: 600; margin: 2px 0 2px;
+    }
+    .asset-row {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 9px; border-radius: 12px;
+      background: #fff; border: 1px solid var(--line);
+      margin-bottom: 5px;
+      box-shadow: 0 1px 2px rgba(40,24,10,0.03);
+    }
+    .asset-ico {
+      width: 26px; height: 26px; border-radius: 8px;
+      display: grid; place-items: center; font-size: 12px;
+      background: rgba(255,77,0,0.12); color: var(--accent);
+      flex-shrink: 0; font-weight: 700;
+    }
+    .asset-row .info { flex: 1; min-width: 0; }
+    .asset-row .info strong { display: block; font-size: 11px; color: var(--text); font-weight: 700; }
+    .asset-row .info span { font-size: 9px; color: var(--muted); }
+    .asset-row .amt {
+      font-size: 11px; font-weight: 700; color: var(--accent);
+      background: rgba(255,77,0,0.1);
+      padding: 3px 8px; border-radius: 999px;
+    }
+    .asset-row .amt.mint { color: var(--mint); background: rgba(5,150,105,0.1); }
+
+    .flow {
+      display: grid; grid-template-columns: repeat(5, 1fr);
+      gap: 8px; margin-top: 14px;
+    }
+    .flow-item {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--line);
+      border-radius: 12px; padding: 12px 8px; text-align: center;
+    }
+    .flow-item .n {
+      width: 22px; height: 22px; margin: 0 auto 6px; border-radius: 6px;
+      display: grid; place-items: center; font-size: 10px; font-weight: 700;
+      color: var(--accent); background: rgba(235, 125, 0, 0.12);
+      border: 1px solid rgba(235, 125, 0, 0.28);
+    }
+    .flow-item strong { display: block; font-size: 11px; margin-bottom: 2px; color: var(--text); }
+    .flow-item p { font-size: 10px; color: var(--muted); }
+
+    .stack { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .chip {
+      border: 1px solid var(--line); background: rgba(255, 255, 255, 0.04);
+      border-radius: 999px; padding: 6px 11px; font-size: 11px; color: var(--muted);
+    }
+
+    .dots {
+      position: fixed; right: 16px; top: 50%; transform: translateY(-50%);
+      display: flex; flex-direction: column; gap: 9px; z-index: 40;
+    }
+    .dots a {
+      width: 8px; height: 8px; border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.25); display: block; background: transparent;
+    }
+    .dots a.active {
+      background: var(--accent); border-color: var(--accent);
+      box-shadow: 0 0 12px rgba(235, 125, 0, 0.35);
+    }
+
+    .mac-bezel.capture-mode .laptop-screen-in.has-capture {
+      flex: 1;
+      border-radius: 0;
+    }
+
+    .phone-glass.has-app-screen .phone-notch {
+      display: none;
+    }
+
+    .laptop-screen-in.has-capture,
+    .phone-screen-in.has-capture {
+      padding: 0 !important;
+    }
+
+    .screen-capture {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .screen-capture--laptop {
+      object-fit: cover;
+      object-position: top center;
+    }
+
+    .phone-safe {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      background: #2e2910;
+    }
+    .phone-status-bar {
+      flex: 0 0 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 0 4px;
+      background: #2e2910;
+      position: relative;
+      z-index: 2;
+    }
+    .phone-island-pill {
+      width: 29%;
+      min-width: 52px;
+      max-width: 72px;
+      height: 10px;
+      border-radius: 999px;
+      background: #000;
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+        0 1px 2px rgba(0, 0, 0, 0.6);
+    }
+    .phone-home-bar {
+      flex: 0 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #2e2910;
+    }
+    .phone-home-bar span {
+      width: 32%;
+      min-width: 80px;
+      max-width: 110px;
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.38);
+    }
+    .phone-screen-body {
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      background: #2e2910;
+    }
+    .screen-capture--phone {
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+    }
+
+    @media (max-width: 960px) {
+      .hero-layout, .split-visual, .grid-2, .grid-3, .flow { grid-template-columns: 1fr; }
+      .phone-wrap { margin-left: 0; margin-top: 14px; }
+      .devices { flex-direction: column; align-items: center; }
+      .brand-mark .name { font-size: 40px; }
+    }
+
+    @page { size: A4 landscape; margin: 0; }
+    @media print {
+      .dots { display: none !important; }
+      html { scroll-snap-type: none; }
+      .slide {
+        width: 297mm; height: 210mm; min-height: 210mm; max-height: 210mm;
+        page-break-after: always; break-after: page;
+        padding: 0 0 12mm;
+      }
+      .wrap {
+        padding: 10mm 16mm 0;
+      }
+      .topbar {
+        padding: 8mm 16mm;
+      }
+      .slide:last-child { page-break-after: auto; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="dots" aria-label="Slides">
+    <a href="#s1" class="active"></a><a href="#s2"></a><a href="#s3"></a>
+    <a href="#s4"></a><a href="#s5"></a><a href="#s6"></a><a href="#s7"></a>
+  </nav>
+
+  <div id="device-kit" style="position:absolute;left:-9999px;top:0;width:1px;height:1px;overflow:hidden" aria-hidden="true">
+    <div class="devices">
+      <div class="laptop mbp-m5-pro">
+        <div class="mbp-lid">
+          <div class="mac-bezel">
+            <div class="mbp-notch-row" aria-hidden="true"><span class="mbp-notch"></span></div>
+            <div class="laptop-screen-in"></div>
+          </div>
+        </div>
+        <div class="mbp-base">
+          <span class="mbp-hinge"></span>
+          <div class="mbp-deck"><span class="mbp-trackpad"></span></div>
+          <div class="mbp-foot"></div>
+        </div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone">
+          <div class="phone-chrome">
+            <div class="phone-glass">
+              <span class="phone-notch"></span>
+              <div class="phone-screen-in"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="slide" id="s1">
+    <header class="topbar">
+      <div class="topbar-brand">
+        <div class="topbar-mark" aria-hidden="true"><span></span></div>
+        <div>
+          <strong>Escape Club</strong>
+          <em>Luxury Travel Platform</em>
+        </div>
+      </div>
+    </header>
+    <div class="wrap hero-layout">
+      <div>
+        <div class="brand-mark">
+          <span class="orb" aria-hidden="true"></span>
+          <span class="name">Escape Club</span>
+        </div>
+        <h1>Luxury member travel on <span class="accent">autopilot</span></h1>
+        <p class="lead">
+          A production Next.js platform for a private travel club — cinematic landing, secure membership,
+          TiDB-backed trips, and a dashboard with globe, analytics, discovery, and itinerary studio.
+        </p>
+        <p class="body-copy">
+          <strong style="color:var(--text)">Product role:</strong> editorial surface sells the club; the signed-in
+          workspace holds dreams, bookings, spend charts, live feed, WebGL globe, and AI-assisted day plans —
+          deployed live on Vercel with SSL TiDB Cloud.
+        </p>
+      </div>
+      <div data-slot="hero"></div>
+    </div>
+  </section>
+
+  <section class="slide" id="s2">
+    <div class="wrap split-visual">
+      <div>
+        <p class="eyebrow">01 · Main Motive</p>
+        <h2>Give luxury travel a single member system of record</h2>
+        <p class="body-copy">
+          <strong style="color:var(--text)">Motive:</strong> replace brochure sites and scattered concierge threads with one
+          auth-gated product where discovery, booking pipeline, and departures stay in sync.
+        </p>
+        <div class="grid-3" style="grid-template-columns:1fr;gap:10px">
+          <div class="card"><span class="tag">Mission</span><h3>Operationalize the club</h3><p>Every destination, trip status, and itinerary day lives in one TiDB-backed workspace.</p></div>
+          <div class="card"><span class="tag">Intent</span><h3>Sell silence, deliver clarity</h3><p>GSAP landing for emotion; dashboard for stats, globe, feed, and drag-and-drop days.</p></div>
+          <div class="card"><span class="tag">North star</span><h3>Always know what’s next</h3><p>Members see the next departure, pipeline, and action without email archaeology.</p></div>
+        </div>
+      </div>
+      <div data-slot="motive"></div>
+    </div>
+  </section>
+
+  <section class="slide" id="s3">
+    <div class="wrap split-visual">
+      <div data-slot="why"></div>
+      <div>
+        <p class="eyebrow">02 · Why Built</p>
+        <h2>Market friction versus product response</h2>
+        <div class="grid-2">
+          <div class="card"><span class="tag">Friction</span><h3>Fragmented luxury stack</h3><ul><li>Itineraries in PDFs and WhatsApp</li><li>No signed-in member product</li><li>Maps as marketing only</li></ul></div>
+          <div class="card"><span class="tag">Response</span><h3>Unified club workspace</h3><ul><li>JWT auth + dashboard</li><li>Prisma on TiDB Cloud</li><li>Globe + itinerary studio</li></ul></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="s4">
+    <div class="wrap split-visual">
+      <div>
+        <p class="eyebrow">03 · Business Value</p>
+        <h2>Commercial outcomes the product is built to protect</h2>
+        <div class="grid-2">
+          <div class="card"><span class="tag">Retention</span><h3>Member memory</h3><p>Trips, tiers, and history persist per account in production SQL.</p></div>
+          <div class="card"><span class="tag">Throughput</span><h3>Shorter dream → book</h3><p>Discovery panel and POST /api/trips compress the pipeline.</p></div>
+          <div class="card"><span class="tag">Quality</span><h3>Brand-grade UX</h3><p>Editorial motion, health checks, and empty states that guide first trip.</p></div>
+          <div class="card"><span class="tag">Scale</span><h3>Cloud-ready ops</h3><p>Vercel deploy, unified escape-club.sql, repeatable db:setup scripts.</p></div>
+        </div>
+      </div>
+      <div data-slot="business"></div>
+    </div>
+  </section>
+
+  <section class="slide" id="s5">
+    <div class="wrap split-visual">
+      <div data-slot="journey"></div>
+      <div>
+        <p class="eyebrow">04 · User Benefits</p>
+        <h2>What members feel day to day</h2>
+        <div class="flow">
+          <div class="flow-item"><div class="n">1</div><strong>Discover</strong><p>Rail</p></div>
+          <div class="flow-item"><div class="n">2</div><strong>Dream</strong><p>List</p></div>
+          <div class="flow-item"><div class="n">3</div><strong>Book</strong><p>Trips</p></div>
+          <div class="flow-item"><div class="n">4</div><strong>Plan</strong><p>Days</p></div>
+          <div class="flow-item"><div class="n">5</div><strong>Depart</strong><p>Live</p></div>
+        </div>
+        <div class="stack">
+          <span class="chip">Less context switching</span>
+          <span class="chip">Clear next departure</span>
+          <span class="chip">Eight curated edges</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="s6">
+    <div class="wrap split-visual">
+      <div>
+        <p class="eyebrow">05 · Core Intelligence</p>
+        <h2>What the stack does — and how it runs</h2>
+        <p class="body-copy" style="margin-bottom:12px">
+          Next.js 15 App Router on the surface; Prisma + TiDB Cloud underneath; JWT sessions at the edge.
+          The globe plots real destination coordinates; itinerary generate rebuilds days; Recharts and dnd-kit
+          keep analytics and planning inside one member shell.
+        </p>
+        <div class="grid-2">
+          <div class="card"><span class="tag">Plan</span><h3>Itinerary generate</h3><p>API route builds multi-day plans around destination context and weather windows.</p></div>
+          <div class="card"><span class="tag">Map</span><h3>WebGL globe</h3><p>react-globe.gl + Three.js render lat/lng from curated seed destinations.</p></div>
+          <div class="card"><span class="tag">Auth</span><h3>Secure sessions</h3><p>bcrypt passwords, jose JWT cookies, middleware on /dashboard routes.</p></div>
+          <div class="card"><span class="tag">Data</span><h3>TiDB production</h3><p>SSL DATABASE_URL, /api/health/db, Vercel env for live escape-club.vercel.app.</p></div>
+        </div>
+      </div>
+      <div data-slot="intel"></div>
+    </div>
+  </section>
+
+  <section class="slide" id="s7">
+    <div class="wrap split-visual">
+      <div>
+        <p class="eyebrow">06 · Full Picture</p>
+        <h2>Product surface at a glance</h2>
+        <div class="grid-2">
+          <div class="card"><span class="tag">What</span><h3>Escape Club product</h3><p>Landing, join, overview, globe, itinerary studio, trips, charts, discovery, live booking feed.</p></div>
+          <div class="card"><span class="tag">Who</span><h3>Private club members</h3><p>Travelers who expect editorial marketing and an operational dashboard behind login.</p></div>
+          <div class="card"><span class="tag">Stack</span><h3>Next.js 15 · Prisma</h3><p>React 19, Tailwind 4, GSAP, Framer Motion, TiDB MySQL, GitHub + Vercel production.</p></div>
+          <div class="card"><span class="tag">Outcome</span><h3>Live deliverable</h3><p>escape-club.vercel.app — real auth, real database, full-screen UX — not a static mockup site.</p></div>
+        </div>
+      </div>
+      <div data-slot="full"></div>
+    </div>
+  </section>
+
+  <script>
+    const shots = {
+      heroLaptop: "mockups/04-dashboard.png",
+      heroPhone: "mockups/07-landing-mobile.png",
+      itinerary: "mockups/06-itinerary.png",
+      joinMobile: "mockups/08-join-mobile.png",
+      globe: "mockups/05-globe.png",
+      destinationsMobile: "mockups/09-destinations-mobile.png",
+      dashboard: "mockups/04-dashboard.png",
+      dashboardMobile: "mockups/10-dashboard-mobile.png",
+    };
+
+    function fillLaptopCapture(el, src, alt) {
+      if (!el || !src) return;
+      el.classList.add("has-capture");
+      const bezel = el.closest(".mac-bezel");
+      if (bezel) bezel.classList.add("capture-mode");
+      el.innerHTML = `<img class="screen-capture screen-capture--laptop" src="${src}" alt="${alt}" loading="eager" decoding="async" />`;
+    }
+
+    function fillPhoneCapture(el, src, alt) {
+      if (!el || !src) return;
+      el.classList.add("has-capture");
+      const glass = el.closest(".phone-glass");
+      if (glass) glass.classList.add("has-app-screen");
+      el.innerHTML = `<img class="screen-capture screen-capture--phone" src="${src}" alt="${alt}" loading="eager" decoding="async" />`;
+    }
+
+    function cloneDevices(mode, laptopSrc, phoneSrc) {
+      const kit = document.querySelector("#device-kit .devices").cloneNode(true);
+      kit.classList.remove("solo-laptop", "solo-phone");
+      if (mode) kit.classList.add(mode);
+      fillLaptopCapture(kit.querySelector(".laptop-screen-in"), laptopSrc, "Escape Club — desktop");
+      fillPhoneCapture(kit.querySelector(".phone-screen-in"), phoneSrc, "Escape Club — mobile");
+      return kit;
+    }
+
+    function miniPhone(src) {
+      const wrap = document.createElement("div");
+      wrap.className = "mini-phone";
+      const phone = document.querySelector("#device-kit .phone").cloneNode(true);
+      wrap.appendChild(phone.firstElementChild.cloneNode(true));
+      fillPhoneCapture(wrap.querySelector(".phone-screen-in"), src, "Escape Club — mobile");
+      return wrap;
+    }
+
+    const slots = {
+      hero: () => cloneDevices("", shots.heroLaptop, shots.heroPhone),
+      motive: () => cloneDevices("solo-laptop", shots.itinerary, null),
+      why: () => cloneDevices("solo-phone", null, shots.joinMobile),
+      business: () => cloneDevices("solo-laptop", shots.globe, null),
+      journey: () => cloneDevices("solo-phone", null, shots.destinationsMobile),
+      intel: () => miniPhone(shots.dashboardMobile),
+      full: () => cloneDevices("solo-laptop", shots.dashboard, null),
+    };
+
+    Object.entries(slots).forEach(([key, fn]) => {
+      const el = document.querySelector(`[data-slot="${key}"]`);
+      if (el) el.appendChild(fn());
+    });
+
+    const slides = [...document.querySelectorAll(".slide")];
+    const topbar = document.querySelector("#s1 .topbar");
+    if (topbar) {
+      slides.slice(1).forEach((slide) => {
+        if (!slide.querySelector(".topbar")) {
+          slide.insertBefore(topbar.cloneNode(true), slide.firstChild);
+        }
+      });
+    }
+    const dots = [...document.querySelectorAll(".dots a")];
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const idx = slides.indexOf(entry.target);
+        dots.forEach((d, i) => d.classList.toggle("active", i === idx));
+      });
+    }, { threshold: 0.55 });
+    slides.forEach((s) => io.observe(s));
+  </script>
+</body>
+</html>

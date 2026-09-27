@@ -1,0 +1,8 @@
+{
+  "name": "portfolio-doc",
+  "private": true,
+  "scripts": {
+    "mockups": "node capture-mockups.mjs",
+    "pdf": "node print.mjs"
+  }
+}

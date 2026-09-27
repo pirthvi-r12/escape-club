@@ -41,7 +41,7 @@ export function SiteNav({ user }: { user: SessionUser | null }) {
         initial={{ y: -28, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 1, delay: 0.85, ease: EASE_LUXE }}
-        className="fixed inset-x-0 top-0 z-50"
+        className="fixed inset-x-0 top-0 z-50 pt-[max(0.5rem,env(safe-area-inset-top,0px))]"
       >
         <div
           className={cn(

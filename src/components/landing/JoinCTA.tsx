@@ -61,7 +61,7 @@ export function JoinCTA() {
         aria-hidden="true"
         style={{
           background:
-            "linear-gradient(180deg, #04050a 0%, rgba(4,5,10,0.45) 22%, rgba(4,5,10,0.5) 62%, #04050a 100%)",
+            "linear-gradient(180deg, #2e2910 0%, rgba(46,41,16,0.45) 22%, rgba(46,41,16,0.5) 62%, #2e2910 100%)",
         }}
       />
 
