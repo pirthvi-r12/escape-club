@@ -28,8 +28,8 @@ export async function GET() {
       status,
       configured: true,
       message: connected
-        ? "PostgreSQL connection is healthy."
-        : "Cannot reach PostgreSQL on localhost:5432. Run npm run db:setup or install PostgreSQL.",
+        ? "Database connection is healthy."
+        : "Cannot reach the configured database. Check TiDB / DATABASE_URL on the server.",
       setupUrl: "/setup/database",
     },
     { status: connected ? 200 : 503 },
