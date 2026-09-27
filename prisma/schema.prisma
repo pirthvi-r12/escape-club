@@ -1,0 +1,104 @@
+// ESCAPE CLUB — MySQL schema
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Tier {
+  EXPLORER
+  VOYAGER
+  OBSIDIAN
+}
+
+enum TripStatus {
+  DREAMING
+  BOOKED
+  COMPLETED
+  CANCELLED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  avatarUrl    String?
+  tier         Tier     @default(EXPLORER)
+  homeCity     String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  trips       Trip[]
+  itineraries Itinerary[]
+
+  @@index([email])
+}
+
+model Destination {
+  id        String  @id @default(cuid())
+  slug      String  @unique
+  name      String
+  country   String
+  region    String
+  lat       Float
+  lng       Float
+  heroImage String
+  tagline   String
+  basePrice Int
+
+  trips Trip[]
+
+  @@index([region])
+}
+
+model Trip {
+  id            String     @id @default(cuid())
+  userId        String
+  destinationId String
+  title         String
+  status        TripStatus @default(BOOKED)
+  startDate     DateTime
+  endDate       DateTime
+  miles         Int        @default(0)
+  spend         Int        @default(0)
+  rating        Int?
+  createdAt     DateTime   @default(now())
+
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  destination Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
+  itinerary   Itinerary?
+
+  @@index([userId, status])
+  @@index([createdAt])
+}
+
+model Itinerary {
+  id        String   @id @default(cuid())
+  userId    String
+  tripId    String?  @unique
+  title     String
+  summary   String   @db.Text
+  days      Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  trip Trip? @relation(fields: [tripId], references: [id], onDelete: SetNull)
+}
+
+/// Platform-wide activity powering the live booking feed.
+model BookingEvent {
+  id          String   @id @default(cuid())
+  memberName  String
+  memberTier  Tier     @default(EXPLORER)
+  destination String
+  country     String
+  amount      Int
+  createdAt   DateTime @default(now())
+
+  @@index([createdAt])
+}
