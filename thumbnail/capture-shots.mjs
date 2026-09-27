@@ -31,7 +31,7 @@ const browser = await puppeteer.launch({
   args: ["--no-sandbox"],
 });
 
-const mobileUA =
+const IPHONE_16_PRO_MAX_UA =
   "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1";
 
 async function prepMobile(page) {
@@ -48,12 +48,12 @@ async function prepMobile(page) {
     );
     document.documentElement.style.background = "#2e2910";
     const header = document.querySelector("header");
-    if (header) header.style.paddingTop = "max(18px, env(safe-area-inset-top, 0px))";
+    if (header) header.style.paddingTop = "59px";
   });
 }
 
 const mobile = await browser.newPage();
-await mobile.setUserAgent(mobileUA);
+await mobile.setUserAgent(IPHONE_16_PRO_MAX_UA);
 await mobile.setViewport({ width: 440, height: 956, deviceScaleFactor: 3, isMobile: true });
 await mobile.goto(BASE, { waitUntil: "networkidle2", timeout: 120000 });
 await prepMobile(mobile);

@@ -310,31 +310,85 @@
     }
 
     .phone {
+      --phone-w: 188px;
+      --phone-h: calc(var(--phone-w) * 956 / 440);
+      --phone-r-outer: calc(var(--phone-w) * 55 / 440);
+      --phone-r-inner: calc(var(--phone-w) * 51 / 440);
+      --phone-bezel: max(2px, calc(var(--phone-w) * 2.5 / 440));
       position: absolute;
-      right: -22px;
-      bottom: 48px;
+      right: -26px;
+      bottom: 44px;
       z-index: 8;
-      padding: 9px;
-      border-radius: 34px;
-      background: #121216;
-      border: 1px solid rgba(235, 125, 0, 0.22);
-      box-shadow: 0 28px 70px -16px rgba(0, 0, 0, 0.92);
+      width: var(--phone-w);
+      height: var(--phone-h);
+      filter: drop-shadow(0 22px 44px rgba(0, 0, 0, 0.42));
     }
 
-    .phone-screen {
-      width: 174px;
-      height: 378px;
-      border-radius: 26px;
+    .phone-chrome {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      padding: var(--phone-bezel);
+      border-radius: var(--phone-r-outer);
+      background: #1c1c1e;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
       overflow: hidden;
-      background: #2e2910;
     }
 
-    .phone-screen img {
+    .phone-glass {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: var(--phone-r-inner);
+      overflow: hidden;
+      background: #000;
+      transform: translateZ(0);
+    }
+
+    .phone-app-screen {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .phone-app-screen img {
       width: 100%;
       height: 100%;
       display: block;
       object-fit: cover;
       object-position: top center;
+    }
+
+    .phone-island-overlay {
+      position: absolute;
+      top: calc(var(--phone-w) * 11 / 440);
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(var(--phone-w) * 126 / 440);
+      height: calc(var(--phone-w) * 37 / 440);
+      border-radius: 999px;
+      background: #000;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .phone-home-indicator {
+      position: absolute;
+      bottom: calc(var(--phone-w) * 8 / 440);
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .phone-home-indicator span {
+      width: calc(var(--phone-w) * 134 / 440);
+      height: max(3px, calc(var(--phone-w) * 5 / 440));
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.38);
     }
 
     .footer {
@@ -471,13 +525,19 @@
         </div>
 
         <div class="phone">
-          <div class="phone-screen">
-            <img
-              src="shots/phone-landing.png"
-              width="440"
-              height="956"
-              alt="Escape Club — mobile landing"
-            />
+          <div class="phone-chrome">
+            <div class="phone-glass">
+              <div class="phone-app-screen">
+                <img
+                  src="shots/phone-landing.png"
+                  width="440"
+                  height="956"
+                  alt="Escape Club — mobile landing"
+                />
+                <div class="phone-island-overlay" aria-hidden="true"></div>
+                <div class="phone-home-indicator" aria-hidden="true"><span></span></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

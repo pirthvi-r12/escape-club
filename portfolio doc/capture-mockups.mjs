@@ -8,7 +8,7 @@ const outDir = path.join(__dirname, "mockups");
 const BASE = process.env.PORTFOLIO_BASE_URL ?? "https://escape-club.vercel.app";
 /** MacBook Pro class desktop viewport (M-series). */
 const VIEW = { width: 1512, height: 982, deviceScaleFactor: 2 };
-/** iPhone 18 Pro Max class viewport (440×956 logical @3x). */
+/** iPhone 16 Pro Max viewport (440×956 logical @3x). */
 const PHONE = {
   width: 440,
   height: 956,
@@ -16,6 +16,8 @@ const PHONE = {
   isMobile: true,
   hasTouch: true,
 };
+const IPHONE_16_PRO_MAX_UA =
+  "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1";
 
 fs.mkdirSync(outDir, { recursive: true });
 const delay = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -48,12 +50,9 @@ await page.goto(`${BASE}/join?mode=apply`, { waitUntil: "networkidle2", timeout:
 await delay(2000);
 await shot(page, "03-join");
 
-const mobileUA =
-  "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1";
-
 /** Logged-out mobile shots — must run before session registration (shared browser cookies). */
 const mobileGuest = await browser.newPage();
-await mobileGuest.setUserAgent(mobileUA);
+await mobileGuest.setUserAgent(IPHONE_16_PRO_MAX_UA);
 await mobileGuest.setViewport(PHONE);
 
 async function prepMobilePage(page) {
@@ -70,7 +69,7 @@ async function prepMobilePage(page) {
     );
     document.documentElement.style.background = "#2e2910";
     const header = document.querySelector("header");
-    if (header) header.style.paddingTop = "max(18px, env(safe-area-inset-top, 0px))";
+    if (header) header.style.paddingTop = "59px";
   });
 }
 
@@ -121,7 +120,7 @@ await delay(3500);
 await shot(page, "06-itinerary");
 
 const mobileMember = await browser.newPage();
-await mobileMember.setUserAgent(mobileUA);
+await mobileMember.setUserAgent(IPHONE_16_PRO_MAX_UA);
 await mobileMember.setViewport(PHONE);
 await mobileMember.goto(`${BASE}/dashboard`, { waitUntil: "networkidle2", timeout: 120000 });
 await prepMobilePage(mobileMember);

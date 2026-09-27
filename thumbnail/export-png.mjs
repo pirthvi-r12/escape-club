@@ -17,10 +17,10 @@ const browser = await puppeteer.launch({
   args: ["--no-sandbox", "--allow-file-access-from-files"],
 });
 const page = await browser.newPage();
-await page.setViewport({ width: 2000, height: 1500, deviceScaleFactor: 1 });
+await page.setViewport({ width: 2000, height: 1500, deviceScaleFactor: 2 });
 await page.goto(fileUrl, { waitUntil: "networkidle0", timeout: 120000 });
 await page.evaluate(async () => {
-  const imgs = document.querySelectorAll(".phone-screen img, .imac-screen img");
+  const imgs = document.querySelectorAll(".phone-app-screen img, .imac-screen img");
   await Promise.all(
     [...imgs].map((img) => {
       if (img.complete) return Promise.resolve();

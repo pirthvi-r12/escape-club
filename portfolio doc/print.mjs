@@ -12,7 +12,20 @@ const browser = await puppeteer.launch({
   args: ["--no-sandbox", "--allow-file-access-from-files"],
 });
 const page = await browser.newPage();
+await page.setViewport({ width: 1920, height: 1080, deviceScaleFactor: 2 });
 await page.goto(fileUrl, { waitUntil: "networkidle0", timeout: 120000 });
+await page.evaluate(async () => {
+  const imgs = document.querySelectorAll(".screen-capture--phone, .screen-capture--laptop");
+  await Promise.all(
+    [...imgs].map((img) => {
+      if (img.complete) return Promise.resolve();
+      return new Promise((res, rej) => {
+        img.onload = res;
+        img.onerror = rej;
+      });
+    }),
+  );
+});
 await page.emulateMediaType("print");
 await page.pdf({
   path: pdfPath,
